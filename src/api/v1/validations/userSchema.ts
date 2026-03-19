@@ -23,7 +23,6 @@ import Joi from "joi";
  *         role:
  *           type: string
  *           enum: [user, admin, developer]
- *           default: user
  *           description: User's role in the system
  */
 

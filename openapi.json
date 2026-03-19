@@ -112,7 +112,6 @@
               "admin",
               "developer"
             ],
-            "default": "user",
             "description": "User's role in the system"
           }
         }
@@ -204,7 +203,7 @@
         ],
         "parameters": [
           {
-            "name": "id",
+            "name": "uid",
             "in": "path",
             "required": true,
             "schema": {
