@@ -4,8 +4,15 @@ import * as postController from "../controllers/postController";
 import { postSchemas } from "../validations/postSchema";
 import authenticate from "../middleware/authenticate";
 import isAuthorized from "../middleware/authorize";
+import cors from "cors";
 
 const postRouter = express.Router();
+
+const authenticatedCorsOptions = {
+    origin: process.env.ALLOWED_ORIGINS?.split(",") || [],
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+};
 
 /**
  * @openapi
@@ -54,7 +61,7 @@ const postRouter = express.Router();
  *               $ref: '#/components/schemas/Error'
  */
 
-postRouter.post("/", 
+postRouter.post("/", cors(authenticatedCorsOptions), 
     authenticate,
     isAuthorized({ hasRole: ["admin", "manager"] }),
     validateRequest(postSchemas.create), postController.createPostHandler);
