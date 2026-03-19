@@ -1,0 +1,246 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Task Management API Documentation",
+    "version": "1.0.0",
+    "description": "This is the API documentation for the Task Management application."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api/v1",
+      "description": "Local server"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "Post": {
+        "type": "object",
+        "required": [
+          "userId",
+          "content"
+        ],
+        "properties": {
+          "userId": {
+            "type": "string",
+            "description": "The user's identifier who created the post",
+            "example": "user123"
+          },
+          "content": {
+            "type": "string",
+            "description": "The content of the post item",
+            "example": "test content"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date and time when the item was created",
+            "example": "2024-01-15T10:30:00Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date and time when the item was last updated",
+            "example": "2024-01-20T14:45:00Z"
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "required": [
+          "error",
+          "message"
+        ],
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "Error type or code",
+            "example": "VALIDATION_ERROR"
+          },
+          "message": {
+            "type": "string",
+            "description": "Human-readable error message",
+            "example": "The uid and email fields are required"
+          },
+          "details": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "field": {
+                  "type": "string",
+                  "example": "email"
+                },
+                "issue": {
+                  "type": "string",
+                  "example": "must be a valid email address"
+                }
+              }
+            },
+            "description": "Detailed validation errors (optional)"
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "required": [
+          "uid",
+          "email"
+        ],
+        "properties": {
+          "uid": {
+            "type": "string",
+            "description": "Unique identifier for the user",
+            "example": "userid-123"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "User's email address",
+            "example": "user@example.com"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "user",
+              "admin",
+              "developer"
+            ],
+            "default": "user",
+            "description": "User's role in the system"
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/posts": {
+      "post": {
+        "summary": "Create a new post item",
+        "tags": [
+          "Posts"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "userId",
+                  "content"
+                ],
+                "properties": {
+                  "uid": {
+                    "type": "string",
+                    "example": "user123"
+                  },
+                  "content": {
+                    "type": "string",
+                    "example": "test content 123"
+                  },
+                  "createdAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "The date and time when the item was created",
+                    "example": "2024-01-15T10:30:00Z"
+                  },
+                  "updatedAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "The date and time when the item was last updated",
+                    "example": "2024-01-20T14:45:00Z"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Post created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Post"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/:id": {
+      "get": {
+        "summary": "Retrieve a user by ID (Admin only)",
+        "tags": [
+          "Users"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Unique ID of the user to retrieve"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved user details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "user": {
+                      "$ref": "#/components/schemas/User"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Missing or invalid token"
+          },
+          "403": {
+            "description": "Forbidden - Admin access required"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    }
+  },
+  "tags": []
+}

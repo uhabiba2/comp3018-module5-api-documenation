@@ -1,0 +1,47 @@
+{
+  "name": "m5-practice-demo",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "ts-node src/server.ts",
+    "build": "tsc",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "generate-docs": "ts-node scripts/generate-openapi.ts && npx @redocly/cli build-docs openapi.json --output docs/index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/uhabiba2/comp-3018-intial-backend-app.git"
+  },
+  "keywords": [],
+  "author": "Ummy Habiba",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/uhabiba2/comp-3018-intial-backend-app/issues"
+  },
+  "homepage": "https://github.com/uhabiba2/comp-3018-intial-backend-app#readme",
+  "description": "",
+  "devDependencies": {
+    "@redocly/cli": "^2.24.0",
+    "@types/jest": "^30.0.0",
+    "@types/morgan": "^1.9.10",
+    "@types/node": "^25.2.0",
+    "@types/supertest": "^6.0.3",
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-express": "^4.1.8",
+    "jest": "^30.2.0",
+    "supertest": "^7.2.2",
+    "ts-jest": "^29.4.6",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@types/express": "^5.0.6",
+    "express": "^5.2.1",
+    "firebase-admin": "^13.6.0",
+    "joi": "^18.0.2",
+    "morgan": "^1.10.1",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
+  }
+}
